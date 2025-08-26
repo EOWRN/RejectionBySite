@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rejection By Site</title>
+
+  <!-- buffer script lmao -->
+  <script src="bufferscript.js"></script>
+
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+  <!-- jQuery (required for DataTables) -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Italianno&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: Arial, sans-serif}
+  </style>
+</head>
+<body>
+    <header class="banner">
+        <div class="logo">
+            <a href="Index.html">
+              <img src="logo.png" alt="logo">
+            </a>
+          </div>
+        <nav class="nav-links">
+          <a href="Index.html">HOME</a>
+          <a href="Submission.html">SUBMIT A TIP</a>
+          <a href="Rumours.html">RUMOUR MILL</a>
+          <a href="About.html">ABOUT</a>
+        </nav>
+      </header>
+    <br>
+    <br>
+    <br>
+    <div class="bodytitle">
+            INTERVIEWS AND REJECTIONS TRACKER
+    </div>
+    <div class="bodytext">
+    Track the status of pupillage interview invites and rejections from chambers here
+    <br>
+    </div>
+    
+  <table id="sheetTable" class="display"></table>
+
+  <script>
+    const apiUrl = 'https://script.google.com/macros/s/AKfycbwVOLIdmf-vet07BTqMpxRJxEyzpa7Ucp7BJ4FSCFKDe1lZN6Z6ciJ_99FAuxR9YTDF/exec';
+
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const table = document.getElementById('sheetTable');
+
+        // Add headers
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        data[0].forEach(header => {
+          const th = document.createElement('th');
+          th.textContent = header;
+          headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Add data rows
+        const tbody = document.createElement('tbody');
+        for (let i = 1; i < data.length; i++) {
+          const row = document.createElement('tr');
+          data[i].forEach(cell => {
+            const td = document.createElement('td');
+            td.textContent = cell;
+            row.appendChild(td);
+          });
+          tbody.appendChild(row);
+        }
+        table.appendChild(tbody);
+
+        // Initialize DataTable
+        $(document).ready(function () {
+            $('#sheetTable').DataTable({
+            "pageLength": -1,
+            "lengthMenu": [[-1], ["All"]],
+            "lengthChange": false
+  });
+});
+      })
+      .catch(err => console.error('Error fetching data:', err));
+  </script>
+
+
+
+</body>
+</html>
